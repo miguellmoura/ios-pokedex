@@ -38,6 +38,23 @@ class FavoritoService {
         let count = (try? context.count(for: request)) ?? 0
         return count > 0
     }
+
+    // MARK: - Helpers using PokemonResult
+
+    /// Adds a PokemonResult to favorites using its name and url.
+    func adicionarFavorito(pokemon: PokemonResult) {
+        adicionarFavorito(name: pokemon.name, url: pokemon.url)
+    }
+
+    /// Removes a PokemonResult from favorites.
+    func removerFavorito(pokemon: PokemonResult) {
+        removerFavorito(pokemonName: pokemon.name)
+    }
+
+    /// Checks if a PokemonResult is already favorited.
+    func ehFavorito(pokemon: PokemonResult) -> Bool {
+        ehFavorito(pokemonName: pokemon.name)
+    }
     
     private func salvarContexto() {
         do {

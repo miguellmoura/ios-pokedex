@@ -9,7 +9,6 @@ import SwiftUI
 
 struct ListaPokemonsView: View {
     @StateObject private var viewModel = PokemonListViewModel()
-    @State private var favoritos = [Favorito]()
     
     var body: some View {
         NavigationStack {

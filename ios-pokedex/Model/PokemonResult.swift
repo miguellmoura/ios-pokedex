@@ -8,7 +8,7 @@
 import Foundation
 
 struct PokemonResult: Codable, Identifiable {
-    var id = UUID()
     let name: String
     let url: String
+    var id: String { url }
 }

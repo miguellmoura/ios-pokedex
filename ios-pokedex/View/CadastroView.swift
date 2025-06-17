@@ -1,36 +1,38 @@
 import SwiftUI
 
 struct CadastroView: View {
-    @Environment(\.dismiss) var dismiss
     @State private var nome = ""
     @State private var email = ""
     @State private var senha = ""
-    
+    @State private var erro = ""
+    @Environment(\.dismiss) var dismiss
+
     var body: some View {
         VStack(spacing: 20) {
-            Text("Cadastro")
-                .font(.largeTitle)
-                .bold()
-            
-            TextField("Nome", text: $nome)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-            
+            Text("Cadastro").font(.largeTitle)
+
+            TextField("Nome de usuário", text: $nome)
+                .textFieldStyle(.roundedBorder)
+
             TextField("Email", text: $email)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-            
+                .keyboardType(.emailAddress)
+                .textFieldStyle(.roundedBorder)
+
             SecureField("Senha", text: $senha)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-            
-            Button("Cadastrar") {
-                // Lógica de cadastro
-                dismiss()
+                .textFieldStyle(.roundedBorder)
+
+            if !erro.isEmpty {
+                Text(erro).foregroundColor(.red)
             }
-            .buttonStyle(.borderedProminent)
+
+            Button("Cadastrar") {
+                if AuthService.shared.cadastrar(nome: nome, email: email, senha: senha) {
+                    dismiss()
+                } else {
+                    erro = "Email já cadastrado"
+                }
+            }
         }
         .padding()
     }
-}
-
-#Preview {
-    CadastroView()
 }

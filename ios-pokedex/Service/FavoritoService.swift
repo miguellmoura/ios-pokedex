@@ -11,13 +11,14 @@ class FavoritoService {
         let favorito = PokemonFavorito(context: context)
         favorito.name = name
         favorito.url = url
-        
+        favorito.usuario = UserSession.shared.emailLogado
+
         salvarContexto()
     }
-    
+
     func removerFavorito(pokemonName: String) {
         let request: NSFetchRequest<PokemonFavorito> = PokemonFavorito.fetchRequest()
-        request.predicate = NSPredicate(format: "name == %@", pokemonName)
+        request.predicate = NSPredicate(format: "name == %@ AND usuario == %@", pokemonName, UserSession.shared.emailLogado)
         
         if let resultados = try? context.fetch(request) {
             for favorito in resultados {
@@ -26,18 +27,20 @@ class FavoritoService {
             salvarContexto()
         }
     }
-    
+
     func listarFavoritos() -> [PokemonFavorito] {
         let request: NSFetchRequest<PokemonFavorito> = PokemonFavorito.fetchRequest()
+        request.predicate = NSPredicate(format: "usuario == %@", UserSession.shared.emailLogado)
         return (try? context.fetch(request)) ?? []
     }
-    
+
     func ehFavorito(pokemonName: String) -> Bool {
         let request: NSFetchRequest<PokemonFavorito> = PokemonFavorito.fetchRequest()
-        request.predicate = NSPredicate(format: "name == %@", pokemonName)
+        request.predicate = NSPredicate(format: "name == %@ AND usuario == %@", pokemonName, UserSession.shared.emailLogado)
         let count = (try? context.count(for: request)) ?? 0
         return count > 0
     }
+
 
     // MARK: - Helpers using PokemonResult
 

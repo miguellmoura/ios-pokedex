@@ -9,12 +9,17 @@ import SwiftUI
 
 @main
 struct ios_pokedexApp: App {
-    let persistenceController = PersistenceController.shared
+    @AppStorage("usuarioLogadoEmail") var emailLogado: String = ""
 
-    var body: some Scene {
-        WindowGroup {
-            HomeView()
-                .environment(\.managedObjectContext, persistenceController.container.viewContext)
+        var body: some Scene {
+            WindowGroup {
+                NavigationStack {
+                    if emailLogado.isEmpty {
+                        LoginView()
+                    } else {
+                        HomeView() 
+                    }
+                }
+            }
         }
-    }
 }
